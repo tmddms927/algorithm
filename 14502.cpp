@@ -9,9 +9,9 @@ int M;
 int safe;
 vector<vector<int>> v;
 vector<int> inf;
+//pair<int, int> p1;
 vector<vector<int>> check;
 vector<vector<int>> inf_v;
-
 
 void check_inf(int i, int j)
 {
