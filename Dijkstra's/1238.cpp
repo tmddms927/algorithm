@@ -1,49 +1,68 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <limits>
 
 using namespace std;
+#define MAX 2147483647
 
-int N, M, X;
-int maxtime;
-vector<int> shortcut;
-
-class Info
+struct compare
 {
-public:
-	int start;
-	int end;
-	int length;
-
-	Info(int _start, int _end, int _length)
+	bool operator()(pair<int, int>A, pair<int, int>B)
 	{
-		start = _start;
-		end = _end;
-		length = _length;
-	}
-	Info (int _start)
-	{
-		start = _start;
-		length = numeric_limits<int>::max();
-	}
-	bool operator >(const Info& info) const
-	{
-		return end > info.end;
-	}
-	bool operator <(const Info& info) const
-	{
-		return end < info.end;
+		return (A.second > B.second);
 	}
 };
 
+int N, M, X;
+vector<vector<int>> dist;
+vector<vector<int>> board;
+
+void dijkstra(int start)
+{
+	priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
+	vector<bool> visited(N + 1, false);
+	pq.push({start, 0});
+	dist[start][start] = 0;
+	while (!pq.empty())
+	{
+		int now = pq.top().first;
+		int now_short = pq.top().second;
+		pq.pop();
+		if (visited[now] == true)
+			continue;
+		else
+			visited[now] = true;
+		for (int i = 1; i < N + 1; ++i)
+		{
+			if (board[now][i] != -1)
+			{
+				if (board[now][i] + now_short < dist[start][i])
+					dist[start][i] = now_short + board[now][i];
+				pq.push({i, dist[start][i]});
+			}
+		}
+	}
+}
+
 int main()
 {
-	priority_queue<Info> pq;
 	cin >> N >> M >> X;
-	Info info[M];
-	maxtime = 0;
-	shortcut.assign(N, numeric_limits<int>::max());
-	for (int i = 0; i < M; ++i)
-		cin >> info[i].start >> info[i].end >> info[i].length;
+	dist.assign(N + 1, vector<int>(N + 1, MAX));
+	board.assign(N + 1, vector<int>(N + 1, -1));
+	for (int i = 1; i < M + 1; ++i)
+	{
+		int start, end, weight;
+		cin >> start >> end >> weight;
+		board[start][end] = weight;
+	}
+	for (int i = 1; i < N + 1; ++i)
+		dijkstra(i);
+	int ans = 0;
+	for (int i = 1; i < N + 1; ++i)
+	{
+		int temp = dist[X][i] + dist[i][X];
+		if (ans < temp)
+			ans = temp;
+	}
+	cout << ans << endl;
 }

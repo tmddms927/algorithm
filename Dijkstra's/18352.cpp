@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+
 using namespace std;
+
 #define Max 2147483647
 
 int N, M, K, X;
