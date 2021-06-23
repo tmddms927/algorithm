@@ -12,9 +12,10 @@ int max_score = 0;
 
 void	dice_set_position(int idx, int i)
 {
-	cout << idx << ", " << dice[i] << ", " << dice_map[idx].first << ", " << dice_map[idx].second << endl;
 	if (dice_map[idx].second == 0)
 		dice_map[idx].first += 2 * dice[i];
+	else if (dice_map[idx].second == 4)
+		dice_map[idx].first += 5 * dice[i];
 	else if (dice_map[idx].second == 1)
 	{
 		int j;
@@ -58,10 +59,17 @@ void	dice_set_position(int idx, int i)
 			if (dice_map[idx].first == 25)
 				break ;
 		}
-		if (dice_map[idx].first  == 25)
+		if (dice_map[idx].first == 25)
+		{
 			dice_map[idx].second = 4;
+			//if (simul[0] == 0 && simul[1] == 0 && simul[2] == 0 &&
+			//simul[3] == 0 && simul[4] == 1 && simul[5] == 1 &&
+			//simul[6] == 1 && simul[7] == 1 && simul[8] == 0 &&
+			//simul[9] == 1)
+			//	cout << "hi, " << dice_map[idx].first << ", j : " << j << "," << dice[i] - 1 << endl;
+		}
 		if (j < dice[i] - 1)
-			dice_map[idx].first -= (dice[i] - j);
+			dice_map[idx].first += (dice[i] - j) * 5;
 	}
 	if (dice_map[idx].second == 0)
 	{
@@ -72,7 +80,11 @@ void	dice_set_position(int idx, int i)
 		else if (dice_map[idx].first == 30)
 			dice_map[idx].second = 3;
 	}
-	cout << idx << ", " << dice[i] << ", " << dice_map[idx].first << ", " << dice_map[idx].second << endl;
+	//if (simul[0] == 0 && simul[1] == 0 && simul[2] == 0 &&
+	//	simul[3] == 0 && simul[4] == 1 && simul[5] == 1 &&
+	//	simul[6] == 1 && simul[7] == 1 && simul[8] == 0 &&
+	//	simul[9] == 1)
+	//		cout <<  "i : " <<  i << ", " << dice_map[idx].first << ", " << dice_map[idx].second << ", " << idx << endl;
 }
 
 void	cal()
@@ -81,24 +93,30 @@ void	cal()
 
 	for (int i = 0; i < 10; ++i)
 	{
+		if (dice_map[simul[i]].first > 40)
+			return ;
 		dice_set_position(simul[i], i);
 		for (int j = 0; j < 4; ++j)
 		{
 			if (simul[i] == j)
 				continue ;
-			if (dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].second == dice_map[j].second)
+			if ((dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].second == dice_map[j].second && dice_map[simul[i]].first < 40) ||
+				(dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].first == 10) ||
+				(dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].first == 20) ||
+				(dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].first == 25) ||
+				(dice_map[simul[i]].first == dice_map[j].first && dice_map[simul[i]].first == 40))
 				return ;
 		}
-	}
-	for (int i = 0; i < 4; ++i)
-	{
-		if (dice_map[i].first > 40)
-			continue ;
-		score += dice_map[i].first;
+		if (dice_map[simul[i]].first <= 40)
+			score += dice_map[simul[i]].first;
 	}
 	if (score > max_score)
+	{
+		//for (int i = 0; i < 10; ++i)
+		//	cout << simul[i] << ", ";
+		//cout << endl;
 		max_score = score;
-	exit(0);
+	}
 }
 
 void	set_dice(int idx)
