@@ -5,9 +5,9 @@
 
 using namespace std;
 
-unsigned long long N, M;
-vector<pair<int, int>> map[501];
-vector<int> city;
+long long N, M;
+vector<pair<long long, long long>> map[501];
+vector<long long> city;
 
 int			main()
 {
@@ -17,13 +17,10 @@ int			main()
 	{
 		int a, b, c;
 		cin >> a >> b >> c;
-		if (!map[a].empty() && map[a][0].first == b && map[a][0].second > c)
-			map[a][0].second = c;
-		else if (map[a].empty())
-			map[a].push_back({b, c});
+		map[a].push_back({b, c});
 	}
 	city[1] = 0;
-	for (int k = 0; k < 2; ++k)
+	for (int k = 0; k < N; ++k)
 	{
 		for (int i = 1; i <= N; ++i)
 		{
@@ -31,7 +28,7 @@ int			main()
 			{
 				if (city[i] != INF && n.second + city[i] < city[n.first])
 				{
-					if (k == 1)
+					if (k == N - 1)
 					{
 						cout << "-1" << endl;
 						return 0;
