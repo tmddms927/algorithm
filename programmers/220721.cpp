@@ -10,11 +10,12 @@ using namespace std;
 #define MINUS	false
 
 int ans;
+int arr[2] = {1, -1};
 
 void cal(vector<int> const & numbers, vector<bool> & plus, int const & target) {\
+	int temp = 0;
 
-	int temp = plus[0] == PLUS ? numbers[0] : -numbers[0];
-	for (int i = 1; i < numbers.size(); ++i) {\
+	for (int i = 0; i < numbers.size(); ++i) {
 		if (plus[i] == PLUS)
 			temp = temp + numbers[i];
 		else
@@ -30,11 +31,9 @@ void set_comb(vector<int> const & numbers, vector<bool> & plus, int const & defa
 		return ;
 	}
 	for (int i = index; i < plus.size(); ++i) {
-		if (plus[i] == PLUS) {
 			plus[i] = MINUS;
 			set_comb(numbers, plus, default_num, my_num + 1, target, i + 1);
 			plus[i] = PLUS;
-		}
 	}
 }
 
