@@ -49,10 +49,5 @@ int solution(vector<int> numbers, int target) {
 
 int main() {
 	vector<int> numbers{ 1, 1, 1, 1, 1 };
-	// numbers.push_back(1);
-	// numbers.push_back(1);
-	// numbers.push_back(1);
-	// numbers.push_back(1);
-	// numbers.push_back(1);
 	cout << solution(numbers, 3) << endl;
 }
